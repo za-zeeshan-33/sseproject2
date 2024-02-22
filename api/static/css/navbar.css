@@ -1,0 +1,49 @@
+body {
+  margin: 0; /* Remove default margin */
+}
+.navbar {
+  position: sticky;
+  top: 0; /* Stick to the top of the viewport */
+  z-index: 1000; /* Ensure it appears above other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  }
+
+.navbar a {
+  text-decoration: none;
+  color: #fff;
+  margin: 0 10px;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.navbar form {
+  display: flex;
+  align-items: center;
+}
+
+.navbar input[type="text"] {
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.navbar button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #e50914;
+  color: #fff;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  background-color: #ff0000;
+}

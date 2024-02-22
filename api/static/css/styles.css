@@ -1,0 +1,12 @@
+body {
+    font-family: Arial, sans-serif; /* Apply Arial font to the entire body */
+}
+
+.main-content {
+    display: flex;
+}
+
+.content {
+    flex: 1; /* Allow the main content area to take up remaining space */
+    padding: 20px;
+}

@@ -1,0 +1,50 @@
+.sidebar {
+    margin-left: 20px; /* Adjust left margin as needed */
+    margin-right: auto; /* Automatically adjust right margin for centering */
+}
+
+/* Widget styles */
+.widget-container:first-child {
+    position: sticky;
+    top: 70px;
+}
+
+.widget-container:not(:first-child) {
+    position: sticky;
+    top: calc(90px + var(--widget-height));
+}
+
+.widget {
+    width: 400px; /* Set the width of the widget */
+    background-color: #ffffff;
+    border-radius: 8px; /* Rounded corners for a sleek look */
+    border: 1px solid #cccccc; /* Grey stroke around the border */
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    padding: 20px;
+    margin-bottom: 20px; /* Add margin to create space between widgets */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.widget h2 {
+    color: #333333; /* Title color */
+    font-size: 1.5rem; /* Title font size */
+    margin-bottom: 10px; /* Add spacing below the title */
+}
+
+.widget p {
+    color: #666666; /* Text color */
+    font-size: 1rem; /* Text font size */
+    line-height: 1.5; /* Line height for readability */
+    margin-bottom: 10px; /* Add spacing below paragraphs */
+}
+
+.widget a {
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove default underline */
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+.widget a:hover {
+    color: #0056b3; /* Hover color */
+}
+
