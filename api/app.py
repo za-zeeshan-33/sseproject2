@@ -51,3 +51,8 @@ def profile():
 @app.route('/map')
 def index():
     return render_template("map.html")
+
+
+@app.route('/country')
+def country():
+    return render_template("country.html")

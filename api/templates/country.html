@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shows Loading...</title>
+    <style>
+        .show-box {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 5px; 
+            background-color: #f9f9f9; 
+            display: inline-block;
+            width: calc(30% - 20px); 
+            box-sizing: border-box;
+            text-align: center;
+        }
+        #showsList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around; 
+        }
+    </style>
+</head>
+<body>
+    <h1 id="countryTitle">Shows for Selected Country</h1>
+    <div id="showsList"></div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const storedData = localStorage.getItem('countryShows');
+        console.log("Stored data:", storedData);
+    
+        const showsData = JSON.parse(storedData);
+        console.log("Parsed data:", showsData);
+    
+        let shows = [];
+        let countryName = "Unknown Country";
+    
+        if (showsData) {
+          if (typeof showsData === 'object' && showsData.shows) {
+            shows = showsData.shows;
+            countryName = showsData.country || "Selected Country"; 
+          } else if (Array.isArray(showsData)) {
+            shows = showsData;
+          }
+          document.title = countryName + " Shows";
+          document.getElementById('countryTitle').textContent = 'Shows for ' + countryName;
+    
+          if (shows.length > 0) {
+            const list = document.getElementById('showsList');
+            list.innerHTML = ''; 
+            shows.forEach(show => {
+              const box = document.createElement('div');
+              box.className = 'show-box';
+              box.textContent = show.name || show;
+              list.appendChild(box);
+            });
+          } else {
+            document.getElementById('showsList').textContent = 'No shows found.';
+          }
+        } else {
+          document.getElementById('showsList').textContent = 'No data found.';
+        }
+      });
+    </script>    
+</body>
+</html>

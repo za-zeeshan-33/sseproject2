@@ -9,12 +9,12 @@
       body {
           margin: 0;
           padding: 0;
-          background-color: #000; /* Black background */
+          background-color: #000;
       }
       #map {
-          width: 100w; /* 80% of the viewport width */
-          height: 100vh; /* 80% of the viewport height */
-          border: 1px solid #000; /* Optional: white border */
+          width: 100w;
+          height: 100vh;
+          border: 1px solid #000;
           box-sizing: border-box;
       }
     </style>
@@ -32,7 +32,6 @@
     attribution: '© OpenStreetMap contributors'
   }).addTo(map);
 
-  // Sample minimal GeoJSON data for demonstration purposes
   var geoJsonData = {
     "type": "FeatureCollection",
     "features": [
@@ -40,8 +39,8 @@
         "type": "Feature",
         "properties": {
           "name": "France",
-          "iso2": "FR", // Assuming you have an iso2 property
-          "url": "https://example.com/france" // This could be removed if not used for redirection
+          "iso2": "FR",
+          "url": "https://example.com/france" 
         },
         "geometry": {
           "type": "Polygon",
@@ -67,7 +66,7 @@
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.iso2) {
         layer.on('click', function() {
-            const apiUrl = `https://content-discovery-api-server.eddqajgbfmdrhwf3.uksouth.azurecontainer.io/shows?country=${feature.properties.iso2}`;
+            const apiUrl = `http://netflix-content-server.c5chg3ggc2a2fddj.westeurope.azurecontainer.io:5001/shows?country=${feature.properties.iso2}`;
             console.log("Fetching data from:", apiUrl)
             fetch(apiUrl)
                 .then(response => response.json())
@@ -76,7 +75,7 @@
                 // Store the fetched data in local storage
                 localStorage.setItem('countryShows', JSON.stringify(data));
                 // Redirect to the new page
-                window.location.href = 'country.html';
+                window.location.href = '/country';
                 })
                 .catch(error => console.error('Error:', error));
         });
