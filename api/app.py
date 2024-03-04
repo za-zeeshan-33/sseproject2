@@ -76,11 +76,34 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    # Clear the session
-    session.pop('auth_token', None)
-    session.pop('username', None)  # Make sure to also clear the username
-    # Redirect to the homepage or login page
-    return redirect(url_for('homepage'))
+    token = session.get('auth_token')
+    if not token:
+        session.pop('auth_token', None)
+        session.pop('username', None)
+        return redirect(url_for("logoutresult"))
+    
+    response = requests.post(
+        f"https://finalprojectsse.azurewebsites.net/api/logout"
+        f"?token={token}"
+    )    
+    if response.status_code == 200:
+        session.pop('auth_token', None)
+        session.pop('username', None)
+        error_message = response.text
+        flash(error_message)
+        return redirect(url_for("logoutresult"))
+    else:
+        # For any other errors, flash a generic error message
+        error_message = response.text
+        flash(error_message)
+        session.pop('auth_token', None)
+        session.pop('username', None)
+        return redirect(url_for("logoutresult"))
+    
+
+@app.route("/logoutresult")
+def logoutresult():
+    return render_template("logout.html")
 
 
 @app.route("/profile")
@@ -91,7 +114,7 @@ def profile():
         flash("You must be logged in to view your profile.")
         return redirect(url_for("login"))
 
-    response = requests.get(
+    response = requests.post(
         f"https://finalprojectsse.azurewebsites.net/api/protected"
         f"?token={token}"
     )    
