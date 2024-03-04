@@ -1,10 +1,27 @@
+<head>
+  <style>
+    .greeting {
+      margin-left: 10px; /* Adds space to the right of the greeting */
+      margin-right: 12px; /* Adds space to the right of the greeting */
+    }
+</style>
+</head>
 <div class="navbar">
-    <a href="/"><strong>Netflix Recomms</strong></a>
-    <form action="/search" method="get">
-      <input type="text" name="query" placeholder="Search...">
-      <button type="submit">Search</button>
-    </form>
-    <a href="/my_list">My List</a>
-    <a href="/logout">Logout</a>
-    <a href="/database">Database</a>
+  <a href="/"><strong>Netflix Recommendations</strong></a>
+  <form action="/search" method="get">
+    <input type="text" name="query" placeholder="Search...">
+    <button type="submit">Search</button>
+  </form>
+  {% if session.get('auth_token') %}
+
+      <span class="greeting">Hi, {{ session['username'] }}</span>
+      <a href="/profile">Profile</a>
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+      <form id="logout-form" action="/logout" method="POST" style="display: none;">
+      </form>
+  {% else %}
+      <a href="/profile">Profile</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+  {% endif %}
 </div>
