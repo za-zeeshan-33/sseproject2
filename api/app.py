@@ -141,3 +141,13 @@ def index():
 @app.route('/country')
 def country():
     return render_template("country.html")
+
+
+@app.route("/search")
+def search():
+    flash("An error occurred. Please try again.")
+    return redirect(url_for("searchresult"))
+
+@app.route("/searchresult")
+def searchresult():
+    return render_template("searchresult.html")

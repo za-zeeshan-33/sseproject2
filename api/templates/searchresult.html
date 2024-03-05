@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Homepage</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/widget.css') }}" />
+        
+    </head>
+    <body>
+        {% if 'auth_token' in session %}
+            {% include 'navbar_logged_in.html' %}
+        {% else %}
+            {% include 'navbar_logged_out.html' %}
+        {% endif %}
+<body>
+    <center><h2>Search Results</h2>
+    
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    <div class="content">
+        <h3>Popular in U.K</h3>
+        <a href="https://ibb.co/ZczJGvb"><img src="https://i.ibb.co/QYvcphx/Screenshot-1.jpg" alt="Screenshot-1" border="0"></a>
+        <h3>Popular in America</h3>
+        <a href="https://ibb.co/C0gGjxv"><img src="https://i.ibb.co/4NzrbBM/Screenshot-2.jpg" alt="Screenshot-2" border="0"></a>
+    </div></center>
+</body>
+</html>
