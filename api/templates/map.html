@@ -191,9 +191,15 @@
                 .then(response => response.json())
                 .then(data => {
                 console.log("Data received:", data)
-                // Store the fetched data in local storage
+
+                // Prepare the data to include both shows and country name
+                const countryData = {
+                    country: feature.properties.name, // Dynamically get the country name from the feature properties
+                    shows: data // The fetched shows data
+                };
+
+              
                 localStorage.setItem('countryShows', JSON.stringify(data));
-                // Redirect to the new page
                 window.location.href = '/country';
                 })
                 .catch(error => console.error('Error:', error));
