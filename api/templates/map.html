@@ -178,6 +178,78 @@
             "type": "Polygon",
             "coordinates": [[[-125.5078125, 24.84656534821976], [-66.796875, 24.84656534821976], [-66.796875, 49.38237278700955], [-125.5078125, 49.38237278700955], [-125.5078125, 24.84656534821976]]]
         }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "name": "Italy",
+            "iso2": "IT",
+            "url": "https://example.com/italy"
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+        [6.6279296875, 36.59788913307022], 
+        [18.45703125, 36.59788913307022], 
+        [18.45703125, 47.517200697839414], 
+        [6.6279296875, 47.517200697839414], 
+        [6.6279296875, 36.59788913307022]
+        ]]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "name": "Japan",
+            "iso2": "JP",
+            "url": "https://example.com/japan"
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+        [122.34375, 24.206889622398023], 
+        [153.984375, 24.206889622398023], 
+        [153.984375, 45.89000815866184], 
+        [122.34375, 45.89000815866184], 
+        [122.34375, 24.206889622398023]
+        ]]
+    }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "name": "Mexico",
+            "iso2": "MX",
+            "url": "https://example.com/mexico"
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+        [-118.125, 14.434680215297268], 
+        [-86.484375, 14.434680215297268], 
+        [-86.484375, 32.54681317351514], 
+        [-118.125, 32.54681317351514], 
+        [-118.125, 14.434680215297268]
+        ]]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "name": "United Kingdom",
+            "iso2": "GB",
+            "url": "https://example.com/united-kingdom"
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+        [-10.8544921875, 49.83798245308484], 
+        [1.93359375, 49.83798245308484], 
+        [1.93359375, 60.930432202923335], 
+        [-10.8544921875, 60.930432202923335], 
+        [-10.8544921875, 49.83798245308484]
+        ]]
+        }
     }
     ]
   };
@@ -206,10 +278,18 @@
         });
     }
   }
-
   L.geoJSON(geoJsonData, {
-    onEachFeature: onEachFeature
-  }).addTo(map);
+    onEachFeature: onEachFeature,
+    style: function(feature) {
+        return {
+            color: '#333333', // Border color
+            fillColor: 'red', // Fill color
+            weight: 2, // Border width
+            opacity: 1, // Border opacity
+            fillOpacity: 0.45 // Fill opacity
+        };
+    }
+}).addTo(map);
 </script>
 
 </body>
