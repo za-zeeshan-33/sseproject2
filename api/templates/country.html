@@ -72,7 +72,7 @@
                             return;
                         }
 
-                        fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/checkfavourite?username=${username}&show=${show}`, {
+                        fetch(`http://sse-project-2.azure-api.net/profile/checkfavourite?username=${username}&show=${show}`, {
                             method: 'GET',
                         })
                         .then(response => {
@@ -117,7 +117,7 @@
 
       function saveToFavourites(show) {
         const username = "{{ username }}"
-        fetch('http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/addfavourite', {
+        fetch('http://sse-project-2.azure-api.net/profile/addfavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({username: username, show: show})
@@ -137,7 +137,7 @@
 
       function removeFromFavourites(show) {
         const username = "{{ username }}"
-        fetch('http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/deletefavourite', {
+        fetch('http://sse-project-2.azure-api.net/profile/deletefavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({username: username, show: show})

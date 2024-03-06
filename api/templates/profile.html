@@ -24,7 +24,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const username = "{{ username }}";
-            fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite?username=${username}`, {
+            fetch(`http://sse-project-2.azure-api.net/profile/displayfavourite?username=${username}`, {
                 method: 'GET',
             })
             .then(response => {
