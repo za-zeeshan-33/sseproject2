@@ -15,6 +15,11 @@ def before_request():
 @app.route("/")
 def homepage():
     return render_template("index.html")
+    
+@app.route("/widget1")
+def widget1():
+    username = session.get('username')
+    return render_template("widget1.html", username=username)
 
 
 @app.route("/submit_register", methods=["POST"])
