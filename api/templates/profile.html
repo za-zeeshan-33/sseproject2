@@ -34,31 +34,28 @@
                 return response.json();
             })
             .then(data => {
-                // Handle the response data
+
                 const resultElement = document.getElementById('result');
-                // Clear any existing content
+
                 resultElement.innerHTML = '';
 
-                // Access the second element of 'data', which is the array of movie objects
                 const movies = data[1];
 
-                // Check if 'movies' is not empty and is an array
                 if (Array.isArray(movies) && movies.length > 0) {
                     const list = document.createElement('ul');
                     movies.forEach(item => {
-                        // Create a list item for each movie in the 'movies' array
+  
                         const listItem = document.createElement('li');
-                        listItem.textContent = item.movie; // Assuming each item is an object with a 'movie' property
+                        listItem.textContent = item.movie;
                         list.appendChild(listItem);
                     });
                     resultElement.appendChild(list);
                 } else {
-                    // If 'movies' is empty or not an array
                     resultElement.textContent = 'No movies found.';
                 }
             })
             .catch(error => {
-                // Handle errors
+
                 console.error('Error:', error);
                 document.getElementById('result').textContent = 'Failed to load data. Error: ' + error.message;
             });

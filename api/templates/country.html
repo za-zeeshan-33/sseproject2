@@ -63,10 +63,8 @@
 
                     const favouriteButton = document.createElement('button');
 
-                    // Function to check if the show is favorited
                     const checkIfFavourited = () => {
                         const username = "{{ username }}";
-                        // Check if username is 'none' and hide the button
                         if (username.toLowerCase() === 'none') {
                             favouriteButton.style.display = 'none';
                             return;
@@ -90,11 +88,10 @@
                                     saveToFavourites(show);
                                 }
                             });
-                            favouriteButton.disabled = false; // Enable the button after checking the status
+                            favouriteButton.disabled = false;
                         })
                         .catch(error => {
                             console.error('Error checking favourite status:', error);
-                            // Handle the error as needed
                         });
                     };
 
@@ -104,7 +101,6 @@
                     box.appendChild(favouriteButton);
                     showsList.appendChild(box);
 
-                    // Check initial state of the button
                     checkIfFavourited();
                 });
             } else {

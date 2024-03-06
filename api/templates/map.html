@@ -40,7 +40,6 @@
         "properties": {
           "name": "France",
           "iso2": "FR",
-          "url": "https://example.com/france" 
         },
         "geometry": {
           "type": "Polygon",
@@ -51,8 +50,7 @@
         "type": "Feature",
         "properties": {
           "name": "Germany",
-          "iso2": "DE", // Assuming you have an iso2 property
-          "url": "https://example.com/germany" // This could be removed if not used for redirection
+          "iso2": "DE", 
         },
         "geometry": {
           "type": "Polygon",
@@ -64,7 +62,6 @@
         "properties": {
             "name": "Australia",
             "iso2": "AU",
-            "url": "https://example.com/australia"
         },
         "geometry": {
             "type": "Polygon",
@@ -76,7 +73,6 @@
         "properties": {
             "name": "Brazil",
             "iso2": "BR",
-            "url": "https://example.com/brazil"
         },
         "geometry": {
             "type": "Polygon",
@@ -88,7 +84,6 @@
         "properties": {
             "name": "Canada",
             "iso2": "CA",
-            "url": "https://example.com/canada"
         },
         "geometry": {
             "type": "Polygon",
@@ -100,7 +95,6 @@
         "properties": {
             "name": "China",
             "iso2": "CN",
-            "url": "https://example.com/china"
         },
         "geometry": {
             "type": "Polygon",
@@ -112,7 +106,6 @@
         "properties": {
             "name": "Egypt",
             "iso2": "EG",
-            "url": "https://example.com/egypt"
         },
         "geometry": {
             "type": "Polygon",
@@ -124,7 +117,6 @@
         "properties": {
             "name": "India",
             "iso2": "IN",
-            "url": "https://example.com/india"
         },
         "geometry": {
             "type": "Polygon",
@@ -136,7 +128,6 @@
         "properties": {
             "name": "Kenya",
             "iso2": "KE",
-            "url": "https://example.com/kenya"
         },
         "geometry": {
             "type": "Polygon",
@@ -148,7 +139,6 @@
         "properties": {
             "name": "Russia",
             "iso2": "RU",
-            "url": "https://example.com/russia"
         },
         "geometry": {
             "type": "Polygon",
@@ -160,7 +150,6 @@
         "properties": {
             "name": "South Africa",
             "iso2": "ZA",
-            "url": "https://example.com/south-africa"
         },
         "geometry": {
             "type": "Polygon",
@@ -172,7 +161,6 @@
         "properties": {
             "name": "United States",
             "iso2": "US",
-            "url": "https://example.com/united-states"
         },
         "geometry": {
             "type": "Polygon",
@@ -184,7 +172,6 @@
         "properties": {
             "name": "Italy",
             "iso2": "IT",
-            "url": "https://example.com/italy"
         },
         "geometry": {
             "type": "Polygon",
@@ -202,7 +189,6 @@
         "properties": {
             "name": "Japan",
             "iso2": "JP",
-            "url": "https://example.com/japan"
         },
         "geometry": {
             "type": "Polygon",
@@ -220,7 +206,6 @@
         "properties": {
             "name": "Mexico",
             "iso2": "MX",
-            "url": "https://example.com/mexico"
         },
         "geometry": {
             "type": "Polygon",
@@ -238,7 +223,6 @@
         "properties": {
             "name": "United Kingdom",
             "iso2": "GB",
-            "url": "https://example.com/united-kingdom"
         },
         "geometry": {
             "type": "Polygon",
@@ -263,11 +247,9 @@
                 .then(response => response.json())
                 .then(data => {
                 console.log("Data received:", data)
-
-                // Prepare the data to include both shows and country name
                 const countryData = {
-                    country: feature.properties.name, // Dynamically get the country name from the feature properties
-                    shows: data // The fetched shows data
+                    country: feature.properties.name, 
+                    shows: data 
                 };
 
                 localStorage.setItem('country', JSON.stringify(feature.properties.name));
@@ -282,11 +264,11 @@
     onEachFeature: onEachFeature,
     style: function(feature) {
         return {
-            color: '#333333', // Border color
-            fillColor: 'red', // Fill color
-            weight: 2, // Border width
-            opacity: 1, // Border opacity
-            fillOpacity: 0.45 // Fill opacity
+            color: '#333333',
+            fillColor: 'red',
+            weight: 2,
+            opacity: 1, 
+            fillOpacity: 0.45 
         };
     }
 }).addTo(map);
