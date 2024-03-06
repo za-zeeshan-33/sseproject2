@@ -5,99 +5,65 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
     <style>
-        #savedShowsList ul {
+        #result ul {
             list-style-type: none; /* Removes bullet points */
             padding: 0; /* Removes default padding from the ul element */
-            margin: 0; /* Adjust if you need to remove default margin */
+            margin: 0 auto; /* Center the list */
+            text-align: center; /* Align text to the left within the centered list */
         }
-    </style>
-</head>
-<body>
-    {% include 'navbar_logged_in.html' %}
-    <center><div class="content">
-        <div id="username" data-username="{{ username }}">Username: {{ username }}</div>
-        <h1>Your saved shows</h1>
-        <div id="savedShowsList">Loading saved shows...</div>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const usernameElement = document.getElementById('username');
-                const username = usernameElement.getAttribute('data-username');
-    
-                fetch('http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({username: username})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const favoriteMovies = data[1]; // Assuming the movies array is the second item
-                    const moviesContainer = document.getElementById('favoriteMovies');
-
-                    // Clear existing content
-                    moviesContainer.innerHTML = '';
-
-                    // Create a list element for each movie
-                    favoriteMovies.forEach(movie => {
-                        const movieElement = document.createElement('div');
-                        movieElement.textContent = movie.movie; // Assuming the movie title is stored in the "movie" property
-                        moviesContainer.appendChild(movieElement);
-                    });
-                })
-                .catch(error => console.error('Error:', error));
-            });
-        </script>
-        </div></center>
-</div>
-</body>
-</html>
-
-
-<!-- LOCAL STORAGE VERSION OF THE FAVOURITED SHOWS
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Homepage</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
-    <style>
-        #savedShowsList ul {
-            list-style-type: none; /* Removes bullet points */
-            padding: 0; /* Removes default padding from the ul element */
-            margin: 0; /* Adjust if you need to remove default margin */
+        #result {
+            text-align: center; /* Ensure the text and list are centered */
         }
     </style>
 </head>
 <body>
     {% include 'navbar_logged_in.html' %} 
     <center><div class="content">
-        <h1>Your saved shows</h1>
-        <div id="savedShowsList">Loading saved shows...</div>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // Retrieve the saved shows from localStorage
-                const savedShows = JSON.parse(localStorage.getItem('savedShows')) || [];
-                const savedShowsListElement = document.getElementById('savedShowsList');
-                
-                // Clear the initial loading message
-                savedShowsListElement.innerHTML = '';
-                
-                if (savedShows.length > 0) {
-                    // Create a list element to display each saved show
+    <h1>Your saved shows</h1>
+    <div id="result">Loading...</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = "{{ username }}";
+            fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite?username=${username}`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle the response data
+                const resultElement = document.getElementById('result');
+                // Clear any existing content
+                resultElement.innerHTML = '';
+
+                // Access the second element of 'data', which is the array of movie objects
+                const movies = data[1];
+
+                // Check if 'movies' is not empty and is an array
+                if (Array.isArray(movies) && movies.length > 0) {
                     const list = document.createElement('ul');
-                    savedShows.forEach(show => {
+                    movies.forEach(item => {
+                        // Create a list item for each movie in the 'movies' array
                         const listItem = document.createElement('li');
-                        listItem.textContent = show; // Assuming 'show' is a string
+                        listItem.textContent = item.movie; // Assuming each item is an object with a 'movie' property
                         list.appendChild(listItem);
                     });
-                    savedShowsListElement.appendChild(list);
+                    resultElement.appendChild(list);
                 } else {
-                    savedShowsListElement.textContent = 'No saved shows found.';
+                    // If 'movies' is empty or not an array
+                    resultElement.textContent = 'No movies found.';
                 }
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error:', error);
+                document.getElementById('result').textContent = 'Failed to load data. Error: ' + error.message;
             });
-        </script>   
+        })
+    </script>
     </div></center>
-</div>
-</body>
-</html> -->
+    </body>
+</html>

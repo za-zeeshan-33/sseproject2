@@ -5,8 +5,6 @@ import requests
 
 app = Flask(__name__, static_folder='static')
 
-CORS(app)
-
 app.secret_key = 'your_very_secret_key_here'
 # session key - need random generator
 
@@ -145,7 +143,8 @@ def index():
 
 @app.route('/country')
 def country():
-    return render_template("country.html")
+    username = session.get('username')
+    return render_template("country.html", username=username)
 
 
 @app.route("/search")

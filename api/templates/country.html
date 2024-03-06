@@ -31,6 +31,7 @@
     <div id="showsList"></div>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        const username = "{{ username }}";
         const storedData = localStorage.getItem('countryShows');
         console.log("Stored data:", storedData);
 
@@ -49,7 +50,7 @@
           } else if (Array.isArray(showsData)) {
             shows = showsData;
           }
-          const showsList = document.getElementById('showsList'); // Corrected variable name
+          const showsList = document.getElementById('showsList'); 
 
           if (shows.length > 0) {
             shows.forEach(show => {
@@ -57,42 +58,44 @@
               box.className = 'show-box';
               box.textContent = show;
 
-              const savedShows = JSON.parse(localStorage.getItem('savedShows')) || [];
-              const isFavourited = savedShows.includes(show);
-              const favouriteButton = document.createElement('button');
+              const savedShows = JSON.parse(localStorage.getItem('savedShows')) || []; // favourite functionality
+              const isFavourited = savedShows.includes(show); // favourite functionality
+              const favouriteButton = document.createElement('button');  // favourite functionality
 
-              favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';
-              favouriteButton.addEventListener('click', () => {
-                if (isFavourited) {
-                  removeFromFavourites(show);
+              favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';  // favourite functionality
+              favouriteButton.addEventListener('click', () => {  // favourite functionality
+                if (isFavourited) {  // favourite functionality
+                  removeFromFavourites(show);  // favourite functionality
                   // No need to update the button text here since you're reloading the page
-                } else {
-                  saveToFavourites(show);
+                } else { // favourite functionality
+                  saveToFavourites(show);  // favourite functionality
                   // No need to update the button text here since you're reloading the page
                 }
               });
-              box.appendChild(favouriteButton);
-              showsList.appendChild(box); // Corrected variable name
+              box.appendChild(favouriteButton);  // favourite functionality
+              showsList.appendChild(box);
             });
           } else {
-            showsList.textContent = 'No shows found.'; // Corrected variable name
+            showsList.textContent = 'No shows found.'; 
           }
         } else {
           document.getElementById('showsList').textContent = 'No data found.';
         }
       });
 
+      const username = "{{ username }}";
       function saveToFavourites(show) {
-        let savedShows = JSON.parse(localStorage.getItem('savedShows')) || [];
-        
-        if (!savedShows.some(savedShow => savedShow === show)) {
-          savedShows.push(show);
-          localStorage.setItem('savedShows', JSON.stringify(savedShows));
+        fetch('http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/addfavourite', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username: username, show: show})
+        })
+        .then(response => response.json())
+        .then(data => {
           alert('Show added to favourites!');
-        } else {
-          alert('Show already in favourites!');
-        }
-        location.reload();
+          location.reload(); // Consider dynamically updating the UI instead
+        })
+        .catch(error => console.error('Error adding to favourites:', error));
       }
 
       function removeFromFavourites(show) {
