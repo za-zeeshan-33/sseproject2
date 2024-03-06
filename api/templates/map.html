@@ -66,7 +66,7 @@
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.iso2) {
         layer.on('click', function() {
-            const apiUrl = `http://netflix-content-server.c5chg3ggc2a2fddj.westeurope.azurecontainer.io:5001/shows?country=${feature.properties.iso2}`;
+            const apiUrl = `http://sse-project-2.azure-api.net/shows?country=${feature.properties.iso2}`;
             console.log("Fetching data from:", apiUrl)
             fetch(apiUrl)
                 .then(response => response.json())
