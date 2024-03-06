@@ -14,15 +14,28 @@
         font-family: Arial, sans-serif;
         text-align: center; /* Ensure the text and list are centered */
     }
+
+    table {
+        width: 100%;
+        border-collapse: collapse; /* Collapses border to avoid double lines */
+        text-align: left; /* Aligns text to the left */
+    }
+    th, td {
+        border: 1px solid black; /* Adds borders around table cells */
+        padding: 8px; /* Adds some padding inside table cells */
+    }
+    th {
+        background-color: #f2f2f2; /* Adds a background color to the header */
+    }
+
 </style>
 </head>
-<center><div class="content">
-<h1>🍿Your saved shows🍿</h1>
+<div class="content">
+<center><h1>❤️Top 5 Favourited Movies❤️</h1></center>
 <div id="result">Loading...</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const username = "{{ username }}";
-        fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite?username=${username}`, {
+        fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/topfavourite`, {
             method: 'GET',
         })
         .then(response => {
@@ -32,34 +45,56 @@
             return response.json();
         })
         .then(data => {
+            // Sort the data by 'count' in descending order
+            const sortedData = data.sort((a, b) => b.count - a.count);
+    
             // Handle the response data
             const resultElement = document.getElementById('result');
             // Clear any existing content
             resultElement.innerHTML = '';
-
-            // Access the second element of 'data', which is the array of movie objects
-            const movies = data[1];
-
-            // Check if 'movies' is not empty and is an array
-            if (Array.isArray(movies) && movies.length > 0) {
-                const list = document.createElement('ul');
-                movies.forEach(item => {
-                    // Create a list item for each movie in the 'movies' array
-                    const listItem = document.createElement('li');
-                    listItem.textContent = item.movie; // Assuming each item is an object with a 'movie' property
-                    list.appendChild(listItem);
-                });
-                resultElement.appendChild(list);
-            } else {
-                // If 'movies' is empty or not an array
-                resultElement.textContent = 'No movies found.';
-            }
+    
+            // Create the table elements
+            const table = document.createElement('table');
+            table.style.width = '100%'; // Set the table width
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+    
+            // Create the header row
+            const headerRow = document.createElement('tr');
+            const countHeader = document.createElement('th');
+            countHeader.textContent = 'Count';
+            const movieHeader = document.createElement('th');
+            movieHeader.textContent = 'Movie Name';
+            headerRow.appendChild(countHeader);
+            headerRow.appendChild(movieHeader);
+            thead.appendChild(headerRow);
+    
+            // Append the header to the table
+            table.appendChild(thead);
+    
+            // Populate the body of the table
+            sortedData.forEach(item => {
+                const row = document.createElement('tr');
+                const countCell = document.createElement('td');
+                countCell.textContent = item.count;
+                const movieCell = document.createElement('td');
+                movieCell.textContent = item.movie;
+                row.appendChild(countCell);
+                row.appendChild(movieCell);
+                tbody.appendChild(row);
+            });
+    
+            // Append the body to the table
+            table.appendChild(tbody);
+    
+            // Append the table to the result element
+            resultElement.appendChild(table);
         })
         .catch(error => {
             // Handle errors
             console.error('Error:', error);
-            document.getElementById('result').textContent = 'Sign up to save movies!';
+            document.getElementById('result').textContent = 'Error fetching data.';
         });
-    })
-</script>
-</div></center>
+    });
+    </script>
+    </div>

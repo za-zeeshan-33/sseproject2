@@ -18,8 +18,12 @@ def homepage():
     
 @app.route("/widget1")
 def widget1():
+    return render_template("widget1.html")
+    
+@app.route("/widget2")
+def widget2():
     username = session.get('username')
-    return render_template("widget1.html", username=username)
+    return render_template("widget2.html", username=username)
 
 
 @app.route("/submit_register", methods=["POST"])
