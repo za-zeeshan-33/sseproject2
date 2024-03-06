@@ -31,7 +31,6 @@
     <div id="showsList"></div>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        const username = "{{ username }}";
         const storedData = localStorage.getItem('countryShows');
         console.log("Stored data:", storedData);
 
@@ -50,7 +49,7 @@
           } else if (Array.isArray(showsData)) {
             shows = showsData;
           }
-          const showsList = document.getElementById('showsList'); 
+          const showsList = document.getElementById('showsList'); // Corrected variable name
 
           if (shows.length > 0) {
             shows.forEach(show => {
@@ -58,50 +57,63 @@
               box.className = 'show-box';
               box.textContent = show;
 
-              const savedShows = JSON.parse(localStorage.getItem('savedShows')) || []; // favourite functionality
-              const isFavourited = savedShows.includes(show); // favourite functionality
-              const favouriteButton = document.createElement('button');  // favourite functionality
+              const savedShows = JSON.parse(sessionStorage.getItem('savedShows')) || [];
+              const isFavourited = savedShows.includes(show);
+              const favouriteButton = document.createElement('button');
 
-              favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';  // favourite functionality
-              favouriteButton.addEventListener('click', () => {  // favourite functionality
-                if (isFavourited) {  // favourite functionality
-                  removeFromFavourites(show);  // favourite functionality
+              favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';
+              favouriteButton.addEventListener('click', () => {
+                if (isFavourited) {
+                  removeFromFavourites(show);
                   // No need to update the button text here since you're reloading the page
-                } else { // favourite functionality
-                  saveToFavourites(show);  // favourite functionality
+                } else {
+                  saveToFavourites(show);
                   // No need to update the button text here since you're reloading the page
                 }
               });
-              box.appendChild(favouriteButton);  // favourite functionality
-              showsList.appendChild(box);
+              box.appendChild(favouriteButton);
+              showsList.appendChild(box); // Corrected variable name
             });
           } else {
-            showsList.textContent = 'No shows found.'; 
+            showsList.textContent = 'No shows found.'; // Corrected variable name
           }
         } else {
           document.getElementById('showsList').textContent = 'No data found.';
         }
       });
 
-      const username = "{{ username }}";
       function saveToFavourites(show) {
+        const username = "{{ username }}"
         fetch('http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/addfavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({username: username, show: show})
         })
         .then(response => response.json())
-        .then(data => {
-          alert('Show added to favourites!');
-          location.reload(); // Consider dynamically updating the UI instead
-        })
         .catch(error => console.error('Error adding to favourites:', error));
+        let savedShows = JSON.parse(sessionStorage.getItem('savedShows')) || [];
+        if (!savedShows.some(savedShow => savedShow === show)) {
+          savedShows.push(show);
+          sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
+          alert('Show added to favourites!');
+        } else {
+          alert('Show already in favourites!');
+        }
+        location.reload();
       }
 
       function removeFromFavourites(show) {
-        let savedShows = JSON.parse(localStorage.getItem('savedShows')) || [];
+        const username = "{{ username }}"
+        fetch('http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/deletefavourite', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username: username, show: show})
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Error adding to favourites:', error));
+        let savedShows = JSON.parse(sessionStorage.getItem('savedShows')) || [];
         savedShows = savedShows.filter(savedShow => savedShow !== show);
-        localStorage.setItem('savedShows', JSON.stringify(savedShows));
+        sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
         alert('Show removed from favourites!');
         location.reload();
       }
