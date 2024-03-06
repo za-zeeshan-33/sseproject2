@@ -198,7 +198,7 @@
                     shows: data // The fetched shows data
                 };
 
-              
+                localStorage.setItem('country', JSON.stringify(feature.properties.name));
                 localStorage.setItem('countryShows', JSON.stringify(data));
                 window.location.href = '/country';
                 })

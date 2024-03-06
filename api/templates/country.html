@@ -35,19 +35,22 @@
         const showsData = JSON.parse(storedData);
         console.log("Parsed data:", showsData);
 
+        const countryNameStored = localStorage.getItem('country');
+        let countryName = "Selected Country"; // Default country name
+        
+        if (countryNameStored) {
+            // If countryNameStored is a simple string, no need to parse it
+            countryName = countryNameStored;
+        }
+
+        document.getElementById('countryTitle').textContent = `Shows for ${countryName}`;
+
         let shows = [];
-        let countryName = "Unknown Country";
 
         if (showsData) {
-            if (typeof showsData === 'object' && showsData.shows) {
-                shows = showsData.shows;
-                countryName = showsData.country || "Selected Country";
-                document.title = countryName + " Shows";
-                document.getElementById('countryTitle').textContent = 'Shows for ' + countryName;
-            } else if (Array.isArray(showsData)) {
-                shows = showsData;
-            }
-            const showsList = document.getElementById('showsList');
+          (Array.isArray(showsData))
+          shows = showsData;
+          const showsList = document.getElementById('showsList');
 
             if (shows.length > 0) {
                 shows.forEach(show => {
