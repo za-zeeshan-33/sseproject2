@@ -7,7 +7,11 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/widget.css') }}" />
 </head>
 <body>
-    {% include 'navbar_logged_out.html' %}
+    {% if 'auth_token' in session %}
+        {% include 'navbar_logged_in.html' %}
+    {% else %}
+        {% include 'navbar_logged_out.html' %}
+    {% endif %}
     <center><div class="main-content">
         <div class="sidebar">
             <!-- Widget 1 -->

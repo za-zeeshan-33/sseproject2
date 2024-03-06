@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
+    <head>
+        <title>Homepage</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/widget.css') }}" />
+        
+    </head>
+    <body>
+        {% if 'auth_token' in session %}
+            {% include 'navbar_logged_in.html' %}
+        {% else %}
+            {% include 'navbar_logged_out.html' %}
+        {% endif %}
 <body>
-    <h2>Register</h2>
+    <center><h2>Register</h2>
     <form action="/submit_register" method="post">
         <div>
             <label for="username">Username:</label>
@@ -21,12 +29,18 @@
             {% if messages %}
                 <ul>
                 {% for message in messages %}
-                    <li>{{ message }}</li>
+                <p style="color: red;">{{ message }}</p>
                 {% endfor %}
                 </ul>
             {% endif %}
         {% endwith %}
         <button type="submit">Register</button>
     </form>
+    <div class="content">
+        <h3>Popular in U.K</h3>
+        <a href="https://ibb.co/ZczJGvb"><img src="https://i.ibb.co/QYvcphx/Screenshot-1.jpg" alt="Screenshot-1" border="0"></a>
+        <h3>Popular in America</h3>
+        <a href="https://ibb.co/C0gGjxv"><img src="https://i.ibb.co/4NzrbBM/Screenshot-2.jpg" alt="Screenshot-2" border="0"></a>
+    </div></center>
 </body>
 </html>

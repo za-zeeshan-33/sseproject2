@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/widget.css') }}" />
+    
+</head>
+<body1>
+    {% if 'auth_token' in session %}
+        {% include 'navbar_logged_in.html' %}
+    {% else %}
+        {% include 'navbar_logged_out.html' %}
+    {% endif %}
+<body1>
+
+<center><body>
+    <div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <h2>{{ message }}</h2>
+                <p>Redirecting you to the homepage...</p>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+        <script>
+            setTimeout(function () {
+                window.location.href = "/";
+            }, 3000); // Redirect after 3 seconds
+        </script>
+    </div>
+</body></center>
+
+</html>

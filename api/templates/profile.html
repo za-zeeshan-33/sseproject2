@@ -4,16 +4,109 @@
     <title>Homepage</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <style>
+        #savedShowsList ul {
+            list-style-type: none; /* Removes bullet points */
+            padding: 0; /* Removes default padding from the ul element */
+            margin: 0; /* Adjust if you need to remove default margin */
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar_logged_in.html' %}
+    <center><div class="content">
+        <div id="username" data-username="{{ username }}">Username: {{ username }}</div>
+        <h1>Your saved shows</h1>
+        <div id="savedShowsList">Loading saved shows...</div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const usernameElement = document.getElementById('username');
+                const username = usernameElement.getAttribute('data-username');
+                
+                fetch('user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({username: username})
+                })                
+                
+                .then(response => response.json())
+                .then(data => {
+                    const savedShowsListElement = document.getElementById('savedShowsList');
+                    
+                    // Clear the initial loading message
+                    savedShowsListElement.innerHTML = '';
+                    
+                    if (data && data.length > 0) {
+                        // Create a list element to display each saved show
+                        const list = document.createElement('ul');
+                        data.forEach(show => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = show; // Assuming the API returns an object with a 'name' property for each show
+                            list.appendChild(listItem);
+                        });
+                        savedShowsListElement.appendChild(list);
+                    } else {
+                        savedShowsListElement.textContent = 'No saved shows found.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching favorite shows:', error);
+                    document.getElementById('savedShowsList').textContent = 'Failed to load saved shows.';
+                });
+            });
+        </script>
+        </div></center>
+</div>
+</body>
+</html>
+
+
+<!-- LOCAL STORAGE VERSION OF THE FAVOURITED SHOWS
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <style>
+        #savedShowsList ul {
+            list-style-type: none; /* Removes bullet points */
+            padding: 0; /* Removes default padding from the ul element */
+            margin: 0; /* Adjust if you need to remove default margin */
+        }
+    </style>
 </head>
 <body>
     {% include 'navbar_logged_in.html' %} 
     <center><div class="content">
         <h1>Your saved shows</h1>
-        <h3>America</h3>
-        <a href="https://imgbb.com/"><img src="https://i.ibb.co/ZLGSb58/Screenshot-3.jpg" alt="Screenshot-3" border="0"></a>
-        <h3>U.K</h3>
-        <a href="https://imgbb.com/"><img src="https://i.ibb.co/SXtDPzg/Screenshot-4.jpg" alt="Screenshot-4" border="0"></a>
+        <div id="savedShowsList">Loading saved shows...</div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Retrieve the saved shows from localStorage
+                const savedShows = JSON.parse(localStorage.getItem('savedShows')) || [];
+                const savedShowsListElement = document.getElementById('savedShowsList');
+                
+                // Clear the initial loading message
+                savedShowsListElement.innerHTML = '';
+                
+                if (savedShows.length > 0) {
+                    // Create a list element to display each saved show
+                    const list = document.createElement('ul');
+                    savedShows.forEach(show => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = show; // Assuming 'show' is a string
+                        list.appendChild(listItem);
+                    });
+                    savedShowsListElement.appendChild(list);
+                } else {
+                    savedShowsListElement.textContent = 'No saved shows found.';
+                }
+            });
+        </script>   
     </div></center>
 </div>
 </body>
-</html>
+</html> -->

@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/widget.css') }}" />
+    
 </head>
 <body>
-    <h2>Login</h2>
-    <!-- Display flash messages -->
+    {% if 'auth_token' in session %}
+        {% include 'navbar_logged_in.html' %}
+    {% else %}
+        {% include 'navbar_logged_out.html' %}
+    {% endif %}
+
+    <center><h2>Login</h2>
+    
+    <div class="center-container">
+        <form action="/submit_login" method="post">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <!-- Display flash messages -->
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
-    <form action="/index" method="post">
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password">
-        </div>
-        <button type="submit">Login</button>
-    </form>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <p style="color: red;">{{ message }}</p>
+    {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
+    </div>
+    <div class="content">
+        <h3>Popular in U.K</h3>
+        <a href="https://ibb.co/ZczJGvb"><img src="https://i.ibb.co/QYvcphx/Screenshot-1.jpg" alt="Screenshot-1" border="0"></a>
+        <h3>Popular in America</h3>
+        <a href="https://ibb.co/C0gGjxv"><img src="https://i.ibb.co/4NzrbBM/Screenshot-2.jpg" alt="Screenshot-2" border="0"></a>
+    </div></center>
 </body>
 </html>
