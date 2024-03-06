@@ -25,9 +25,15 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
 </head>
 <body>
-    <h1 id="countryTitle">Shows for Selected Country</h1>
+    <center><h1 id="countryTitle">Shows for Selected Country</h1>
+    <button id="backToMainMap" style="cursor: pointer;">&#8592; Back to main map</button></center>
+    <br>
     <div id="showsList"></div>
     <script>
+      document.getElementById('backToMainMap').addEventListener('click', function() {
+          window.location.href = '/map';
+      });
+
       document.addEventListener('DOMContentLoaded', () => {
         const storedData = localStorage.getItem('countryShows');
         console.log("Stored data:", storedData);
@@ -36,13 +42,10 @@
         console.log("Parsed data:", showsData);
 
         const countryNameStored = localStorage.getItem('country');
-        let countryName = "Selected Country"; // Default country name
-        
+        let countryName = "Selected Country";
         if (countryNameStored) {
-            // If countryNameStored is a simple string, no need to parse it
             countryName = countryNameStored;
         }
-
         document.getElementById('countryTitle').textContent = `Shows for ${countryName}`;
 
         let shows = [];
