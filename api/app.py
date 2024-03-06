@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_cors import CORS
 
 import requests
 
@@ -22,7 +21,7 @@ def homepage():
 def submit_register():
     input_username = request.form.get("username")
     input_password = request.form.get("password")
-    response = requests.post(
+    response = requests.get(
         f"https://finalprojectsse.azurewebsites.net/api/register"
         f"?username={input_username}&password={input_password}"
     )
@@ -48,7 +47,7 @@ def register():
 def submit_login():
     input_username = request.form.get("username")
     input_password = request.form.get("password")
-    response = requests.post(
+    response = requests.get(
         f"https://finalprojectsse.azurewebsites.net/api/login"
         f"?username={input_username}&password={input_password}"
     )
@@ -84,7 +83,7 @@ def logout():
         session.pop('username', None)
         return redirect(url_for("logoutresult"))
     
-    response = requests.post(
+    response = requests.get(
         f"https://finalprojectsse.azurewebsites.net/api/logout"
         f"?token={token}"
     )    
@@ -117,7 +116,7 @@ def profile():
         flash("You must be logged in to view your profile.")
         return redirect(url_for("login"))
 
-    response = requests.post(
+    response = requests.get(
         f"https://finalprojectsse.azurewebsites.net/api/protected"
         f"?token={token}"
     )    
