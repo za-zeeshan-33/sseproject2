@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_cors import CORS
+
 import requests
 
 app = Flask(__name__, static_folder='static')
+
+CORS(app)
 
 app.secret_key = 'your_very_secret_key_here'
 # session key - need random generator
@@ -108,6 +112,7 @@ def logoutresult():
 
 @app.route("/profile")
 def profile():
+    username = session.get('username')
     token = session.get('auth_token')
     if not token:
         # If 'auth_token' does not exist, redirect user to login page
@@ -119,7 +124,7 @@ def profile():
         f"?token={token}"
     )    
     if response.status_code == 400:
-        return render_template("profile.html")
+        return render_template("profile.html", username=username)
     elif response.status_code == 401:
         # If unauthorized, flash error message and redirect to login page
         error_message = response.json().get('message', 'You are not authorized to view this page.')
