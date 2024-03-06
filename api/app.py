@@ -31,7 +31,7 @@ def submit_register():
     input_username = request.form.get("username")
     input_password = request.form.get("password")
     response = requests.get(
-        f"https://finalprojectsse.azurewebsites.net/api/register"
+        f"https://sse-project-2.azure-api.net/login-microservice/register"
         f"?username={input_username}&password={input_password}"
     )
     if response.status_code == 200:
@@ -57,7 +57,7 @@ def submit_login():
     input_username = request.form.get("username")
     input_password = request.form.get("password")
     response = requests.get(
-        f"https://finalprojectsse.azurewebsites.net/api/login"
+        f"https://sse-project-2.azure-api.net/login-microservice/login"
         f"?username={input_username}&password={input_password}"
     )
     if response.status_code == 200:
@@ -93,7 +93,7 @@ def logout():
         return redirect(url_for("logoutresult"))
     
     response = requests.get(
-        f"https://finalprojectsse.azurewebsites.net/api/logout"
+        f"https://sse-project-2.azure-api.net/login-microservice/logout"
         f"?token={token}"
     )    
     if response.status_code == 200:
@@ -126,7 +126,7 @@ def profile():
         return redirect(url_for("login"))
 
     response = requests.get(
-        f"https://finalprojectsse.azurewebsites.net/api/protected"
+        f"https://sse-project-2.azure-api.net/login-microservice/protected"
         f"?token={token}"
     )    
     if response.status_code == 400:
