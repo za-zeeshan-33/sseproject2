@@ -22,39 +22,30 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const usernameElement = document.getElementById('username');
                 const username = usernameElement.getAttribute('data-username');
-                
-                fetch('user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite', {
+    
+                fetch('http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({username: username})
-                })                
-                
+                })
                 .then(response => response.json())
                 .then(data => {
-                    const savedShowsListElement = document.getElementById('savedShowsList');
-                    
-                    // Clear the initial loading message
-                    savedShowsListElement.innerHTML = '';
-                    
-                    if (data && data.length > 0) {
-                        // Create a list element to display each saved show
-                        const list = document.createElement('ul');
-                        data.forEach(show => {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = show; // Assuming the API returns an object with a 'name' property for each show
-                            list.appendChild(listItem);
-                        });
-                        savedShowsListElement.appendChild(list);
-                    } else {
-                        savedShowsListElement.textContent = 'No saved shows found.';
-                    }
+                    const favoriteMovies = data[1]; // Assuming the movies array is the second item
+                    const moviesContainer = document.getElementById('favoriteMovies');
+
+                    // Clear existing content
+                    moviesContainer.innerHTML = '';
+
+                    // Create a list element for each movie
+                    favoriteMovies.forEach(movie => {
+                        const movieElement = document.createElement('div');
+                        movieElement.textContent = movie.movie; // Assuming the movie title is stored in the "movie" property
+                        moviesContainer.appendChild(movieElement);
+                    });
                 })
-                .catch(error => {
-                    console.error('Error fetching favorite shows:', error);
-                    document.getElementById('savedShowsList').textContent = 'Failed to load saved shows.';
-                });
+                .catch(error => console.error('Error:', error));
             });
         </script>
         </div></center>
