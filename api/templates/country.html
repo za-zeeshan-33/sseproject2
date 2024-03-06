@@ -21,10 +21,8 @@
             justify-content: space-around; 
         }
     </style>
-      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
-      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
-  </head>
-  
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
 </head>
 <body>
     <h1 id="countryTitle">Shows for Selected Country</h1>
@@ -41,44 +39,73 @@
         let countryName = "Unknown Country";
 
         if (showsData) {
-          if (typeof showsData === 'object' && showsData.shows) {
-            shows = showsData.shows;
-            countryName = showsData.country || "Selected Country";
-            document.title = countryName + " Shows";
-            document.getElementById('countryTitle').textContent = 'Shows for ' + countryName;
-          } else if (Array.isArray(showsData)) {
-            shows = showsData;
-          }
-          const showsList = document.getElementById('showsList'); // Corrected variable name
+            if (typeof showsData === 'object' && showsData.shows) {
+                shows = showsData.shows;
+                countryName = showsData.country || "Selected Country";
+                document.title = countryName + " Shows";
+                document.getElementById('countryTitle').textContent = 'Shows for ' + countryName;
+            } else if (Array.isArray(showsData)) {
+                shows = showsData;
+            }
+            const showsList = document.getElementById('showsList');
 
-          if (shows.length > 0) {
-            shows.forEach(show => {
-              const box = document.createElement('div');
-              box.className = 'show-box';
-              box.textContent = show;
+            if (shows.length > 0) {
+                shows.forEach(show => {
+                    const box = document.createElement('div');
+                    box.className = 'show-box';
+                    box.textContent = show;
 
-              const savedShows = JSON.parse(sessionStorage.getItem('savedShows')) || [];
-              const isFavourited = savedShows.includes(show);
-              const favouriteButton = document.createElement('button');
+                    const favouriteButton = document.createElement('button');
 
-              favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';
-              favouriteButton.addEventListener('click', () => {
-                if (isFavourited) {
-                  removeFromFavourites(show);
-                  // No need to update the button text here since you're reloading the page
-                } else {
-                  saveToFavourites(show);
-                  // No need to update the button text here since you're reloading the page
-                }
-              });
-              box.appendChild(favouriteButton);
-              showsList.appendChild(box); // Corrected variable name
-            });
-          } else {
-            showsList.textContent = 'No shows found.'; // Corrected variable name
-          }
+                    // Function to check if the show is favorited
+                    const checkIfFavourited = () => {
+                        const username = "{{ username }}";
+                        // Check if username is 'none' and hide the button
+                        if (username.toLowerCase() === 'none') {
+                            favouriteButton.style.display = 'none';
+                            return;
+                        }
+
+                        fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/checkfavourite?username=${username}&show=${show}`, {
+                            method: 'GET',
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return false;
+                            }
+                            return true;
+                        })
+                        .then(isFavourited => {
+                            favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';
+                            favouriteButton.addEventListener('click', () => {
+                                if (isFavourited) {
+                                    removeFromFavourites(show);
+                                } else {
+                                    saveToFavourites(show);
+                                }
+                            });
+                            favouriteButton.disabled = false; // Enable the button after checking the status
+                        })
+                        .catch(error => {
+                            console.error('Error checking favourite status:', error);
+                            // Handle the error as needed
+                        });
+                    };
+
+                    favouriteButton.textContent = 'Loading...';
+                    favouriteButton.disabled = true;
+
+                    box.appendChild(favouriteButton);
+                    showsList.appendChild(box);
+
+                    // Check initial state of the button
+                    checkIfFavourited();
+                });
+            } else {
+                showsList.textContent = 'No shows found.';
+            }
         } else {
-          document.getElementById('showsList').textContent = 'No data found.';
+            document.getElementById('showsList').textContent = 'No data found.';
         }
       });
 
