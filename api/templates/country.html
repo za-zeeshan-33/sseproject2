@@ -74,10 +74,10 @@
                             method: 'GET',
                         })
                         .then(response => {
-                            if (!response.ok) {
-                                return false;
+                            if (response.status == 200) {
+                                return true;
                             }
-                            return true;
+                            return false;
                         })
                         .then(isFavourited => {
                             favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';
