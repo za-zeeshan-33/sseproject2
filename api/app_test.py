@@ -40,6 +40,10 @@ class TestFrontendRender(unittest.TestCase):
         response = self.client.get('/country')
         self.assertEqual(response.status_code, 200)
 
+    def test_search(self):
+        response = self.client.get('/search')
+        self.assertEqual(response.status_code, 200)
+
 
 class TestMock(unittest.TestCase):
     def setUp(self):
@@ -70,6 +74,21 @@ class TestMock(unittest.TestCase):
         ), follow_redirects=True)
 
         self.assertIn(b'Registration failed', response.data)
+
+    @patch('app.requests.get')
+    def test_register_with_invalid_data(self, mock_get):
+
+        mock_response = unittest.mock.Mock()
+        mock_response.status_code = 400
+        mock_response.text = 'Invalid username'
+        mock_response.json.return_value = {'error': 'Invalid username'}
+        mock_get.return_value = mock_response
+        response = self.client.post('/submit_register', data={
+            'username': '',
+            'password': 'password123'
+        }, follow_redirects=True)
+        self.assertIn(b'Invalid username', response.data)
+        self.assertEqual(response.status_code, 200)
 
     @patch('app.requests.get')
     def test_successful_login(self, mock_get):
