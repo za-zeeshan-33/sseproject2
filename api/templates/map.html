@@ -253,7 +253,7 @@
                     shows: cachedData[feature.properties.iso2] // The fetched shows data
                 };
 
-                localStorage.setItem('country', JSON.stringify(feature.properties.name));
+                localStorage.setItem('country', feature.properties.name);
                 localStorage.setItem('countryShows', JSON.stringify(cachedData[feature.properties.iso2]));
                 window.location.href = '/country';
             } else {
@@ -272,8 +272,6 @@
                         country: feature.properties.name, // Dynamically get the country name from the feature properties
                         shows: data // The fetched shows data
                     };
-
-                    localStorage.setItem('country', JSON.stringify(feature.properties.name));
                     localStorage.setItem('countryShows', JSON.stringify(data));
                     window.location.href = '/country';
                     })
