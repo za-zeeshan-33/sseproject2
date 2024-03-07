@@ -85,8 +85,8 @@
         savedShows = savedShows.filter(savedShow => savedShow !== show);
         sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
         alert('Show removed from favourites!');
-        localStorage.setItem('reloadWidgets', Date.now().toString());
-        localStorage.setItem('reloadCountry', Date.now().toString());
+        sessionStorage.setItem('reloadWidgets', Date.now().toString());
+        sessionStorage.setItem('reloadCountry', Date.now().toString());
         location.reload();
       }
 
