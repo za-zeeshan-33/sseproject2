@@ -113,10 +113,11 @@
 
       function saveToFavourites(show) {
         const username = "{{ username }}"
+        const countryName = localStorage.getItem('country')
         fetch('http://sse-project-2.azure-api.net/profile/addfavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({username: username, show: show})
+          body: JSON.stringify({username: username, show: show, country: countryName})
         })
         .then(response => response.json())
         .catch(error => console.error('Error adding to favourites:', error));
@@ -134,10 +135,11 @@
 
       function removeFromFavourites(show) {
         const username = "{{ username }}"
+        const countryName = localStorage.getItem('country')
         fetch('http://sse-project-2.azure-api.net/profile/deletefavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({username: username, show: show})
+          body: JSON.stringify({username: username, show: show, country: countryName})
         })
         .then(response => response.json())
         .catch(error => console.error('Error adding to favourites:', error));
