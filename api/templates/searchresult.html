@@ -2,6 +2,16 @@
 <html lang="en">
 <head>
     <title>Homepage</title>
+    <style>
+        .search-result {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/widget.css') }}">
@@ -23,6 +33,8 @@
                 </ul>
             {% endif %}
         {% endwith %}
+
+        <div id="searchResults"></div>
         
         <div class="content">
             <h3>Popular in U.K</h3>
@@ -30,8 +42,6 @@
             <h3>Popular in America</h3>
             <a href="https://ibb.co/C0gGjxv"><img src="https://i.ibb.co/4NzrbBM/Screenshot-2.jpg" alt="Screenshot-2" border="0"></a>
         </div>
-        
-        <div id="searchResults"></div>
         
     </center>
     <script>
@@ -44,7 +54,7 @@
         const searchQuery = getQueryParam('query');
     
         if(searchQuery) {
-          const apiUrl = `http://netflix-content-server.c5chg3ggc2a2fddj.westeurope.azurecontainer.io:5001/search?query=${encodeURIComponent(searchQuery)}`;
+          const apiUrl = `http://sse-project-2.azure-api.net/search?query=${encodeURIComponent(searchQuery)}`;
           fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
