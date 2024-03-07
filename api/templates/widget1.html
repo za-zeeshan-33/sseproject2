@@ -94,6 +94,12 @@
             location.reload();
         }
     });
+    
+    window.addEventListener('storage', function(event) {
+        if (event.key === 'reloadWidget1') {
+            location.reload();
+        }
+    });
 
     </script>
     </div>

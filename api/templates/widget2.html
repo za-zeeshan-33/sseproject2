@@ -86,13 +86,15 @@
         savedShows = savedShows.filter(savedShow => savedShow !== show);
         sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
         alert('Show removed from favourites!');
+        localStorage.setItem('reloadCountry', Date.now().toString());
+        localStorage.setItem('reloadWidget1', Date.now().toString());
         location.reload();
       }
 
     window.addEventListener('storage', function(event) {
-    if (event.key === 'reloadWidgets') {
-        location.reload();
-    }
-});
+        if (event.key === 'reloadWidgets') {
+            location.reload();
+        }
+    });
 </script>
 </div></center>

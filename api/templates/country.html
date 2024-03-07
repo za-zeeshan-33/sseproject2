@@ -148,6 +148,12 @@
         localStorage.setItem('reloadWidgets', Date.now().toString());
         location.reload();
       }
+
+      window.addEventListener('storage', function(event) {
+        if (event.key === 'reloadCountry') {
+            location.reload();
+        }
+    });
     </script>    
 </body>
 </html>
