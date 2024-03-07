@@ -238,25 +238,45 @@
     ]
   };
 
+  let cachedData = {};
+
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.iso2) {
         layer.on('click', function() {
             const apiUrl = `http://sse-project-2.azure-api.net/shows?country=${feature.properties.iso2}`;
-            console.log("Fetching data from:", apiUrl)
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                console.log("Data received:", data)
+            if (cachedData[feature.properties.iso2]) {
+                // Use cached data
+                // Prepare the data to include both shows and country name
                 const countryData = {
-                    country: feature.properties.name, 
-                    shows: data 
+                    country: feature.properties.name, // Dynamically get the country name from the feature properties
+                    shows: data // The fetched shows data
                 };
 
                 localStorage.setItem('country', JSON.stringify(feature.properties.name));
                 localStorage.setItem('countryShows', JSON.stringify(data));
                 window.location.href = '/country';
-                })
-                .catch(error => console.error('Error:', error));
+            } else {
+                console.log("Fetching data from:", apiUrl)
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                    console.log("Data received:", data)
+                    // cache data
+                    cachedData[feature.properties.iso2] = data;
+
+                    // Prepare the data to include both shows and country name
+                    const countryData = {
+                        country: feature.properties.name, // Dynamically get the country name from the feature properties
+                        shows: data // The fetched shows data
+                    };
+
+                    localStorage.setItem('country', JSON.stringify(feature.properties.name));
+                    localStorage.setItem('countryShows', JSON.stringify(data));
+                    window.location.href = '/country';
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
         });
     }
   }
