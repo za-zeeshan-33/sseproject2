@@ -88,5 +88,12 @@
             document.getElementById('result').textContent = 'Error fetching data.';
         });
     });
+
+    window.addEventListener('storage', function(event) {
+        if (event.key === 'reloadWidgets') {
+            location.reload();
+        }
+    });
+
     </script>
     </div>

@@ -128,6 +128,7 @@
         } else {
           alert('Show already in favourites!');
         }
+        localStorage.setItem('reloadWidgets', Date.now().toString());
         location.reload();
       }
 
@@ -144,6 +145,7 @@
         savedShows = savedShows.filter(savedShow => savedShow !== show);
         sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
         alert('Show removed from favourites!');
+        localStorage.setItem('reloadWidgets', Date.now().toString());
         location.reload();
       }
     </script>    

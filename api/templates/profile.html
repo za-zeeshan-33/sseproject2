@@ -18,49 +18,10 @@
 </head>
 <body>
     {% include 'navbar_logged_in.html' %} 
-    <center><div class="content">
-    <h1>Your saved shows</h1>
-    <div id="result">Loading...</div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const username = "{{ username }}";
-            fetch(`http://sse-project-2.azure-api.net/profile/displayfavourite?username=${username}`, {
-                method: 'GET',
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-
-                const resultElement = document.getElementById('result');
-
-                resultElement.innerHTML = '';
-
-                const movies = data[1];
-
-                if (Array.isArray(movies) && movies.length > 0) {
-                    const list = document.createElement('ul');
-                    movies.forEach(item => {
-  
-                        const listItem = document.createElement('li');
-                        listItem.textContent = item.movie;
-                        list.appendChild(listItem);
-                    });
-                    resultElement.appendChild(list);
-                } else {
-                    resultElement.textContent = 'No movies found.';
-                }
-            })
-            .catch(error => {
-
-                console.error('Error:', error);
-                document.getElementById('result').textContent = 'Failed to load data. Error: ' + error.message;
-            });
-        })
-    </script>
-    </div></center>
+    <center>
+    <div class="content">
+        <iframe src="/widget2" style="height: 100%; width: 100%; border: none;"></iframe>
+    </div>
+    </center>
     </body>
 </html>

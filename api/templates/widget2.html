@@ -20,47 +20,79 @@
 <h1>🍿Your saved shows🍿</h1>
 <div id="result">Loading...</div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const username = "{{ username }}";
-    
-        // Check if username is not None before making the API call
-        if (username !== "None") {
-            fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite?username=${username}`, {
-                method: 'GET',
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
+        document.addEventListener('DOMContentLoaded', function () {
+            const username = "{{ username }}";
+
+            // Check if username is not None before making the API call
+            if (username !== "None") {
+                fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite?username=${username}`, {
+                    method: 'GET',
                 })
-                .then(data => {
-    
-                    const resultElement = document.getElementById('result');
-                    resultElement.innerHTML = '';
-    
-                    const movies = data[1];
-    
-                    if (Array.isArray(movies) && movies.length > 0) {
-                        const list = document.createElement('ul');
-                        movies.forEach(item => {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = item.movie;
-                            list.appendChild(listItem);
-                        });
-                        resultElement.appendChild(list);
-                    } else {
-                        resultElement.textContent = 'No movies found.';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('result').textContent = 'Error loading saved shows';
-                });
-        } else {
-            // Handle the case where username is None
-            document.getElementById('result').textContent = 'Sign up to save movies!';
-        }
-    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+
+                        const resultElement = document.getElementById('result');
+                        resultElement.innerHTML = '';
+
+                        const movies = data[1];
+
+                        if (Array.isArray(movies) && movies.length > 0) {
+                            const list = document.createElement('ul');
+                            movies.forEach(item => {
+                                const listItem = document.createElement('li');
+                                listItem.textContent = item.movie;
+
+                                // Create unfavourite button
+                                const unfavouriteButton = document.createElement('button');
+                                unfavouriteButton.textContent = 'Unfavourite';
+                                unfavouriteButton.addEventListener('click', function() {
+                                    // Call removeFromFavourites for the specific movie
+                                    removeFromFavourites(item.movie);
+                                });
+
+                                listItem.appendChild(unfavouriteButton);
+                                list.appendChild(listItem);
+                            });
+                            resultElement.appendChild(list);
+                        } else {
+                            resultElement.textContent = 'No movies found.';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('result').textContent = 'Error loading saved shows';
+                    });
+            } else {
+                // Handle the case where username is None
+                document.getElementById('result').textContent = 'Sign up to save movies!';
+            }
+        });
+
+    function removeFromFavourites(show) {
+        const username = "{{ username }}"
+        fetch('http://sse-project-2.azure-api.net/profile/deletefavourite', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username: username, show: show})
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Error adding to favourites:', error));
+        let savedShows = JSON.parse(sessionStorage.getItem('savedShows')) || [];
+        savedShows = savedShows.filter(savedShow => savedShow !== show);
+        sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
+        alert('Show removed from favourites!');
+        location.reload();
+      }
+
+    window.addEventListener('storage', function(event) {
+    if (event.key === 'reloadWidgets') {
+        location.reload();
+    }
+});
 </script>
 </div></center>
