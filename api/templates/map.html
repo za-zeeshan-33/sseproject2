@@ -238,7 +238,7 @@
     ]
   };
 
-  let cachedData = {};
+  let cachedData = JSON.parse(localStorage.getItem('cachedData')) || {};
 
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.iso2) {
@@ -246,14 +246,15 @@
             const apiUrl = `http://sse-project-2.azure-api.net/shows?country=${feature.properties.iso2}`;
             if (cachedData[feature.properties.iso2]) {
                 // Use cached data
+                console.log("using cached data:", cachedData[feature.properties.iso2])
                 // Prepare the data to include both shows and country name
                 const countryData = {
                     country: feature.properties.name, // Dynamically get the country name from the feature properties
-                    shows: data // The fetched shows data
+                    shows: cachedData[feature.properties.iso2] // The fetched shows data
                 };
 
                 localStorage.setItem('country', JSON.stringify(feature.properties.name));
-                localStorage.setItem('countryShows', JSON.stringify(data));
+                localStorage.setItem('countryShows', JSON.stringify(cachedData[feature.properties.iso2]));
                 window.location.href = '/country';
             } else {
                 console.log("Fetching data from:", apiUrl)
@@ -263,6 +264,8 @@
                     console.log("Data received:", data)
                     // cache data
                     cachedData[feature.properties.iso2] = data;
+                    localStorage.setItem('cachedData', JSON.stringify(cachedData));
+                    console.log("caching data:", cachedData[feature.properties.iso2])
 
                     // Prepare the data to include both shows and country name
                     const countryData = {
