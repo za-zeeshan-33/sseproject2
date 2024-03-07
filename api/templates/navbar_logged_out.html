@@ -1,10 +1,17 @@
 <div class="navbar">
-    <a href="/"><strong>Netflix Recommendations</strong></a>
-    <form action="/search" method="get">
-      <input type="text" name="query" placeholder="Search...">
-      <button type="submit">Search</button>
-    </form>
-    <a href="/profile">Profile</a>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+  <a href="/"><strong>Netflix Recommendations</strong></a>
+  <form id="searchForm" action="/search" method="get">
+    <input type="text" id="searchQuery" name="query" placeholder="Search...">
+    <button type="submit">Search</button>
+  </form>
+  <a href="/profile">Profile</a>
+  <a href="/login">Login</a>
+  <a href="/register">Register</a>
 </div>
+<script>
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const query = document.getElementById('searchQuery').value;
+  window.location.href = `/search.html?query=${encodeURIComponent(query)}`;
+});
+</script>

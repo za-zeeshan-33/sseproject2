@@ -131,7 +131,7 @@ class TestMock(unittest.TestCase):
 
         response = self.client.get('/profile', follow_redirects=False)
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':

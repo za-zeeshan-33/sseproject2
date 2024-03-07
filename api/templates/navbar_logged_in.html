@@ -25,3 +25,10 @@
       <a href="/register">Register</a>
   {% endif %}
 </div>
+<script>
+  document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const query = document.getElementById('searchQuery').value;
+    window.location.href = `/search.html?query=${encodeURIComponent(query)}`;
+  });
+  </script>
