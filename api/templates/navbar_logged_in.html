@@ -8,8 +8,8 @@
 </head>
 <div class="navbar">
   <a href="/"><strong>Netflix Recommendations</strong></a>
-  <form action="/search" method="get">
-    <input type="text" name="query" placeholder="Search...">
+  <form id="searchForm" action="/search" method="get">
+    <input type="text" id="searchQuery" name="query" placeholder="Search...">
     <button type="submit">Search</button>
   </form>
   {% if session.get('auth_token') %}
@@ -25,10 +25,3 @@
       <a href="/register">Register</a>
   {% endif %}
 </div>
-<script>
-  document.getElementById('searchForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const query = document.getElementById('searchQuery').value;
-    window.location.href = `/search.html?query=${encodeURIComponent(query)}`;
-  });
-  </script>

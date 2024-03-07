@@ -28,57 +28,56 @@
                 fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite?username=${username}`, {
                     method: 'GET',
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resultElement = document.getElementById('result');
+                    resultElement.innerHTML = '';
 
-                        const resultElement = document.getElementById('result');
-                        resultElement.innerHTML = '';
+                    const favourites = data[1]; // Assuming this is the array of favourite items
 
-                        const movies = data[1];
+                    if (Array.isArray(favourites) && favourites.length > 0) {
+                        const list = document.createElement('ul');
+                        favourites.forEach(item => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `${item.movie} - (${item.country}) `; // Displaying both movie and country
 
-                        if (Array.isArray(movies) && movies.length > 0) {
-                            const list = document.createElement('ul');
-                            movies.forEach(item => {
-                                const listItem = document.createElement('li');
-                                listItem.textContent = item.movie;
-
-                                // Create unfavourite button
-                                const unfavouriteButton = document.createElement('button');
-                                unfavouriteButton.textContent = 'Unfavourite';
-                                unfavouriteButton.addEventListener('click', function() {
-                                    // Call removeFromFavourites for the specific movie
-                                    removeFromFavourites(item.movie);
-                                });
-
-                                listItem.appendChild(unfavouriteButton);
-                                list.appendChild(listItem);
+                            // Create unfavourite button
+                            const unfavouriteButton = document.createElement('button');
+                            unfavouriteButton.textContent = 'Unfavourite';
+                            unfavouriteButton.addEventListener('click', function() {
+                                // Call removeFromFavourites for the specific movie
+                                removeFromFavourites(item.movie);
                             });
-                            resultElement.appendChild(list);
-                        } else {
-                            resultElement.textContent = 'No movies found.';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        document.getElementById('result').textContent = 'Error loading saved shows';
-                    });
+
+                            listItem.appendChild(unfavouriteButton);
+                            list.appendChild(listItem);
+                        });
+                        resultElement.appendChild(list);
+                    } else {
+                        resultElement.textContent = 'No favourites found.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').textContent = 'Error loading saved shows';
+                });
             } else {
                 // Handle the case where username is None
                 document.getElementById('result').textContent = 'Sign up to save movies!';
             }
         });
-
-    function removeFromFavourites(show) {
+        function removeFromFavourites(show) {
         const username = "{{ username }}"
+        const countryName = localStorage.getItem('country')
         fetch('http://sse-project-2.azure-api.net/profile/deletefavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({username: username, show: show})
+          body: JSON.stringify({username: username, show: show, country: countryName})
         })
         .then(response => response.json())
         .catch(error => console.error('Error adding to favourites:', error));
@@ -86,10 +85,11 @@
         savedShows = savedShows.filter(savedShow => savedShow !== show);
         sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
         alert('Show removed from favourites!');
+        localStorage.setItem('reloadWidgets', Date.now().toString());
         localStorage.setItem('reloadCountry', Date.now().toString());
-        localStorage.setItem('reloadWidget1', Date.now().toString());
         location.reload();
       }
+
 
     window.addEventListener('storage', function(event) {
         if (event.key === 'reloadWidgets') {
