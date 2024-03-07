@@ -33,4 +33,4 @@ jobs:
       - name: Run tests
         run: |
           cd api
-          python -m unittest discover
+          python app_test.py
