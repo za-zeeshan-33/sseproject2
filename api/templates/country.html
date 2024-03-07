@@ -31,7 +31,7 @@
     <div id="showsList"></div>
     <script>
       document.getElementById('backToMainMap').addEventListener('click', function() {
-          window.location.href = '/map';
+        history.back();
       });
 
       document.addEventListener('DOMContentLoaded', () => {
@@ -74,10 +74,10 @@
                             method: 'GET',
                         })
                         .then(response => {
-                            if (!response.ok) {
-                                return false;
+                            if (response.status == 200) {
+                                return true;
                             }
-                            return true;
+                            return false;
                         })
                         .then(isFavourited => {
                             favouriteButton.textContent = isFavourited ? 'Unfavourite' : 'Favourite';
