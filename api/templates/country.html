@@ -51,7 +51,6 @@
         let shows = [];
 
         if (showsData) {
-          (Array.isArray(showsData))
           shows = showsData;
           const showsList = document.getElementById('showsList');
 
@@ -63,20 +62,24 @@
 
                     const favouriteButton = document.createElement('button');
 
+                    isFavourited=false
                     const checkIfFavourited = () => {
-                        const username = "{{ username }}";
+                        const username = encodeURIComponent("{{ username }}");
                         if (username.toLowerCase() === 'none') {
                             favouriteButton.style.display = 'none';
                             return;
                         }
+                        const encodedShow = encodeURIComponent(show);
 
-                        fetch(`http://sse-project-2.azure-api.net/profile/checkfavourite?username=${username}&show=${show}`, {
+                        fetch(`http://sse-project-2.azure-api.net/profile/checkfavourite?username=${username}&show=${encodedShow}`, {
                             method: 'GET',
                         })
                         .then(response => {
                             if (response.status == 200) {
+                                isFavourited=true
                                 return true;
                             }
+                            isFavourited=false
                             return false;
                         })
                         .then(isFavourited => {
@@ -121,31 +124,21 @@
         })
         .then(response => response.json())
         .catch(error => console.error('Error adding to favourites:', error));
-        let savedShows = JSON.parse(sessionStorage.getItem('savedShows')) || [];
-        if (!savedShows.some(savedShow => savedShow === show)) {
-          savedShows.push(show);
-          sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
-          alert('Show added to favourites!');
-        } else {
-          alert('Show already in favourites!');
-        }
+        alert('Show added to favourites!');
         sessionStorage.setItem('reloadWidgets', Date.now().toString());
         location.reload();
       }
 
       function removeFromFavourites(show) {
         const username = "{{ username }}"
-        const countryName = localStorage.getItem('country')
         fetch('http://sse-project-2.azure-api.net/profile/deletefavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({username: username, show: show, country: countryName})
+          body: JSON.stringify({username: username, show: show})
         })
         .then(response => response.json())
         .catch(error => console.error('Error adding to favourites:', error));
-        let savedShows = JSON.parse(sessionStorage.getItem('savedShows')) || [];
-        savedShows = savedShows.filter(savedShow => savedShow !== show);
-        sessionStorage.setItem('savedShows', JSON.stringify(savedShows));
+
         alert('Show removed from favourites!');
         sessionStorage.setItem('reloadWidgets', Date.now().toString());
         location.reload();

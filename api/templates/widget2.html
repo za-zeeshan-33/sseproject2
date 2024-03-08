@@ -73,11 +73,10 @@
         });
         function removeFromFavourites(show) {
         const username = "{{ username }}"
-        const countryName = localStorage.getItem('country')
         fetch('http://sse-project-2.azure-api.net/profile/deletefavourite', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({username: username, show: show, country: countryName})
+          body: JSON.stringify({username: username, show: show})
         })
         .then(response => response.json())
         .catch(error => console.error('Error adding to favourites:', error));
