@@ -36,7 +36,7 @@
     <div id="result">Loading...</div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/topfavourite`, {
+            fetch(`http://sse-project-2.azure-api.net/profile/topfavourite`, {
                 method: 'GET',
             })
             .then(response => {
@@ -61,11 +61,11 @@
                 countHeader.textContent = 'Count';
                 const movieHeader = document.createElement('th');
                 movieHeader.textContent = 'Movie Name';
-                const countryHeader = document.createElement('th'); // New header for country
+                const countryHeader = document.createElement('th'); 
                 countryHeader.textContent = 'Country';
                 headerRow.appendChild(countHeader);
                 headerRow.appendChild(movieHeader);
-                headerRow.appendChild(countryHeader); // Append the new country header
+                headerRow.appendChild(countryHeader);
                 thead.appendChild(headerRow);
         
                 table.appendChild(thead);
@@ -76,11 +76,11 @@
                     countCell.textContent = item.count;
                     const movieCell = document.createElement('td');
                     movieCell.textContent = item.movie;
-                    const countryCell = document.createElement('td'); // New cell for country
-                    countryCell.textContent = item.country; // Set the text to the country of the item
+                    const countryCell = document.createElement('td'); 
+                    countryCell.textContent = item.country;
                     row.appendChild(countCell);
                     row.appendChild(movieCell);
-                    row.appendChild(countryCell); // Append the new country cell
+                    row.appendChild(countryCell); 
                     tbody.appendChild(row);
                 });
         

@@ -23,7 +23,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             const username = "{{ username }}";
 
-            // Check if username is not None before making the API call
             if (username !== "None") {
                 fetch(`http://user-profile-microservice-api.e4fvgqf6hucwg8ca.westeurope.azurecontainer.io:5000/displayfavourite?username=${username}`, {
                     method: 'GET',
@@ -38,19 +37,17 @@
                     const resultElement = document.getElementById('result');
                     resultElement.innerHTML = '';
 
-                    const favourites = data[1]; // Assuming this is the array of favourite items
+                    const favourites = data[1];
 
                     if (Array.isArray(favourites) && favourites.length > 0) {
                         const list = document.createElement('ul');
                         favourites.forEach(item => {
                             const listItem = document.createElement('li');
-                            listItem.textContent = `${item.movie} - (${item.country}) `; // Displaying both movie and country
+                            listItem.textContent = `${item.movie} - (${item.country}) `;
 
-                            // Create unfavourite button
                             const unfavouriteButton = document.createElement('button');
                             unfavouriteButton.textContent = 'Unfavourite';
                             unfavouriteButton.addEventListener('click', function() {
-                                // Call removeFromFavourites for the specific movie
                                 removeFromFavourites(item.movie);
                             });
 
@@ -67,7 +64,6 @@
                     document.getElementById('result').textContent = 'Error loading saved shows';
                 });
             } else {
-                // Handle the case where username is None
                 document.getElementById('result').textContent = 'Sign up to save movies!';
             }
         });
